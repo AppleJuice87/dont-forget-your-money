@@ -1,6 +1,6 @@
 package com.example.dontforgetyourmoney.data.repository.ConditionRepository;
 
-import com.example.dontforgetyourmoney.data.dao.ConditionDao;
+import com.example.dontforgetyourmoney.data.DAO.ConditionDao;
 import com.example.dontforgetyourmoney.data.model.Condition;
 
 import java.util.List;
