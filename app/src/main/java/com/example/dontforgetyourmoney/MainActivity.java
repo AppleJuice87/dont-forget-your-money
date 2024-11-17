@@ -2,6 +2,8 @@ package com.example.dontforgetyourmoney;
 
 import android.os.Bundle;
 
+import com.example.dontforgetyourmoney.data.repository.ConditionRepository.ConditionRepository;
+import com.example.dontforgetyourmoney.data.repository.PostRepository.PostRepository;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -12,7 +14,19 @@ import androidx.navigation.ui.NavigationUI;
 
 import com.example.dontforgetyourmoney.databinding.ActivityMainBinding;
 
+import javax.inject.Inject;
+
+import dagger.hilt.android.AndroidEntryPoint;
+
+@AndroidEntryPoint
 public class MainActivity extends AppCompatActivity {
+
+    @Inject
+    PostRepository postRepository;
+
+    @Inject
+    ConditionRepository conditionRepository;
+
 
     private ActivityMainBinding binding;
 

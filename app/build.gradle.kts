@@ -14,6 +14,12 @@ android {
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+
+        javaCompileOptions {
+            annotationProcessorOptions {
+                arguments["room.schemaLocation"] = "$projectDir/schemas"
+            }
+        }
     }
 
     buildTypes {
@@ -45,12 +51,12 @@ dependencies {
     implementation(libs.navigation.ui)
     implementation(libs.room.common)
     implementation(libs.room.runtime)
+    annotationProcessor(libs.room.compiler)
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
-    implementation("androidx.recyclerview:recyclerview:1.3.2")
+    implementation(libs.recyclerview)
 
-    implementation ("com.google.dagger:hilt-android:2.40.5")
-    annotationProcessor ("com.google.dagger:hilt-compiler:2.40.5")
-    annotationProcessor(libs.room.compiler)
+    implementation (libs.hilt.android)
+    annotationProcessor(libs.hilt.compiler)
 }
