@@ -1,4 +1,4 @@
-package com.example.dontforgetyourmoney.repository.PostRepository;
+package com.example.dontforgetyourmoney.data.repository.PostRepository;
 
 import com.example.dontforgetyourmoney.data.DAO.PostDao;
 import com.example.dontforgetyourmoney.data.model.Post;

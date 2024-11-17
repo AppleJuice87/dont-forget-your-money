@@ -44,8 +44,13 @@ dependencies {
     implementation(libs.navigation.fragment)
     implementation(libs.navigation.ui)
     implementation(libs.room.common)
+    implementation(libs.room.runtime)
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
     implementation("androidx.recyclerview:recyclerview:1.3.2")
+
+    implementation ("com.google.dagger:hilt-android:2.40.5")
+    annotationProcessor ("com.google.dagger:hilt-compiler:2.40.5")
+    annotationProcessor(libs.room.compiler)
 }
