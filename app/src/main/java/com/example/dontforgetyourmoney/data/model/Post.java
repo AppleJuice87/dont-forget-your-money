@@ -1,6 +1,7 @@
 package com.example.dontforgetyourmoney.data.model;
 
 import androidx.room.Entity;
+import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
 @Entity(tableName = "posts") // 테이블 이름 지정
@@ -26,6 +27,12 @@ public class Post {
         this.grade = grade;
         this.incomeBracket = incomeBracket;
         this.rating = rating;
+    }
+
+    @Ignore
+    public Post(String title, String content) {
+        this.title = title;
+        this.content = content;
     }
 
     public int getId() {

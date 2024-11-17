@@ -39,6 +39,19 @@ android {
     buildFeatures {
         viewBinding = true
     }
+
+
+    packaging {
+        resources {
+            excludes += listOf(
+                "META-INF/LICENSE.md",
+                "META-INF/LICENSE",
+                "META-INF/NOTICE.md",
+                "META-INF/NOTICE",
+                "META-INF/LICENSE-notice.md"
+            )
+        }
+    }
 }
 
 dependencies {
@@ -51,6 +64,7 @@ dependencies {
     implementation(libs.navigation.ui)
     implementation(libs.room.common)
     implementation(libs.room.runtime)
+    androidTestImplementation(libs.junit.jupiter)
     annotationProcessor(libs.room.compiler)
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
