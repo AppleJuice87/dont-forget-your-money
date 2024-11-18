@@ -1,0 +1,7 @@
+<resources>
+    <style name="Custom_SideSheetDialog" parent="Theme.MaterialComponents.Light.Dialog">
+        <item name="android:windowBackground">@android:color/white</item> <!-- 배경색 설정 -->
+        <item name="android:backgroundDimEnabled">true</item>
+        <item name="android:backgroundDimAmount">0.5</item>
+    </style>
+</resources>

@@ -49,13 +49,13 @@ public class PostViewDialog extends Dialog {
         // 조건을 문자열로 변환하는 로직
         StringBuilder conditionText = new StringBuilder();
         if (post.getGrade() != null) {
-            conditionText.append("학년: ").append(post.getGrade()).append(" ");
+            conditionText.append("학년:").append(post.getGrade()).append(" ");
         }
         if (post.getIncomeBracket() != null) {
-            conditionText.append("소득구간: ").append(post.getIncomeBracket()).append(" ");
+            conditionText.append("소득구간:").append(post.getIncomeBracket()).append(" ");
         }
         if (post.getRating() != null) {
-            conditionText.append("평점: ").append(post.getRating()).append(" 이상");
+            conditionText.append("평점:").append(post.getRating()).append(" 이상");
         }
         return conditionText.toString().trim();
     }
