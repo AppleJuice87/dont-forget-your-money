@@ -63,7 +63,7 @@ public class HomeFragment extends Fragment {
 
             //postRepository.insert(new Post("제목1", "123", "본문1", "링크", 2, 10, 4.5));
 
-            //postRepository.deleteAllPosts();
+            postRepository.deleteAllPosts();
 
             //! 파싱 테스트
 

@@ -13,8 +13,6 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import java.io.IOException;
-import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
 
 import javax.inject.Inject;
 import javax.net.ssl.HostnameVerifier;
@@ -113,7 +111,13 @@ public class KUCS_ParserImpl implements Parser {
             // <div class="view-con"> 클래스 하위의 HTML 가져오기
             String contentHtml = postDocument.select(".view-con").html(); // HTML 내용 가져오기
             // HTML에서 줄바꿈을 포함한 텍스트로 변환
-            return contentHtml.replaceAll("<br>", "\n").replaceAll("<[^>]+>", ""); // <br> 태그를 줄바꿈으로 변환하고, 나머지 HTML 태그 제거
+            return contentHtml
+                    .replaceAll("<br>", "\n")
+                    .replaceAll("<[^>]+>", "") // <br> 태그를 줄바꿈으로 변환하고, 나머지 HTML 태그 제거
+                    .replaceAll("&nbsp;", "")
+                    .replaceAll(" ", "")
+                    .replaceAll("(\n{3,})", "\n\n");
+
         } catch (IOException e) {
             Log.e("KUCS_ParserImpl", "Error fetching post content: " + e.getMessage());
             return ""; // 본문이 없을 경우 빈 문자열 반환
@@ -129,9 +133,13 @@ public class KUCS_ParserImpl implements Parser {
         webView.loadUrl(url); // URL 로드
     }
 
-    public Post fillConditions(Post psot) {
+    public Post fillConditions(Post post) {
 
+        String content = post.getContent();
 
-        return null;
+        // chatGPT api 를 사용해서 질문하고, 질문하여 답변을 받아오는 코드
+
+        // 학년 검사 (~학년 이상 수혜가능)
+        return post;
     }
 }
