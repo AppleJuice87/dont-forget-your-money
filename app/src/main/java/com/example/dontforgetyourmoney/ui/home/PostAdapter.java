@@ -42,12 +42,20 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
     }
 
     public void setPosts(List<Post> posts) {
-        //TODO posts를 date 기준으로 정렬하기.
-        // 1. String 에서 -를 모두 제거.
-        // 2. 정수로 변환.
-        // 3. 큰 정수가 처음으로 오도록 List<Post> 정렬
+        // 날짜를 기준으로 정렬하기
+        posts.sort((post1, post2) -> {
+            // 1. String에서 -를 모두 제거하고
+            String date1 = post1.getDate().replace("-", "");
+            String date2 = post2.getDate().replace("-", "");
+            
+            // 2. 정수로 변환
+            int intDate1 = Integer.parseInt(date1);
+            int intDate2 = Integer.parseInt(date2);
+            
+            // 3. 큰 정수가 먼저 오도록 정렬
+            return Integer.compare(intDate2, intDate1);
+        });
 
-        
         this.posts = posts;
         notifyDataSetChanged();
     }
