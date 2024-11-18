@@ -1,5 +1,6 @@
 package com.example.dontforgetyourmoney.ui.dialog;
 
+import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Context;
 import android.view.WindowManager;
@@ -8,14 +9,17 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 
-import com.example.dontforgetyourmoney.R;
+import com.example.dontforgetyourmoney.R.*;
+import com.example.dontforgetyourmoney.*;
 import com.example.dontforgetyourmoney.data.model.Post;
 
 public class PostViewDialog extends Dialog {
     private Post post;
 
+    @SuppressLint("PrivateResource")
     public PostViewDialog(@NonNull Context context, Post post) {
         super(context, com.google.android.material.R.style.Base_Theme_Material3_Light_SideSheetDialog);
+//        super(context, R.style.Custom_SideSheetDialog); // 사용자 정의 스타일 사용
         this.post = post;
         // 다이얼로그 레이아웃 설정
         setContentView(R.layout.dialog_postview);
