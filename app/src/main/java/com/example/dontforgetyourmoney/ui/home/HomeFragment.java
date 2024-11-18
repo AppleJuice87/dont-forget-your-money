@@ -55,8 +55,21 @@ public class HomeFragment extends Fragment {
             // db.postDao().insert(new Post("제목1", "제목2")); // 메인 스레드에서 직접 호출
 
             // 게시글 삽입
-            postRepository.insert(new Post("제목1", "123", "본문1", "링크", 2, 10, 4.5));
-            //postRepository.deleteAllPosts();
+            //postRepository.insert(new Post("제목1", "123", "본문1", "링크", 2, 10, 4.5));
+
+            //postRepository.insert(new Post("제목1", "123", "본문1", "링크", 2, 10, 4.5));
+
+            postRepository.deleteAllPosts();
+            for (int i = 0; i < 10; i++) {
+                postRepository.insert(new Post(String.format("제목%d", i+1),
+                        String.format("날짜%d", i+1),
+                        String.format("본문%d", i+1),
+                        String.format("링크%d", i+1),
+                        2,
+                        10,
+                        4.5));
+            }
+
             // 게시글 가져오기
             List<Post> posts = postRepository.getAllPosts();
 
