@@ -28,7 +28,7 @@ public class ChatGPT {
         try (InputStream input = DontForgetYourMoneyApplication.getAppContext().getAssets().open("config.properties")) {
             properties.load(input);
             apiKey = properties.getProperty("openai.api.key");
-            Log.d("[GPT]", "[GPT] API Key: " + apiKey);
+            //Log.d("[GPT]", "[GPT] API Key: " + apiKey);
         } catch (IOException ex) {
             ex.printStackTrace();
         }
