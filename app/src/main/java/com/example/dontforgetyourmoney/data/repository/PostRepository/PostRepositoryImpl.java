@@ -2,7 +2,6 @@ package com.example.dontforgetyourmoney.data.repository.PostRepository;
 
 import com.example.dontforgetyourmoney.data.DAO.PostDao;
 import com.example.dontforgetyourmoney.data.model.Post;
-import com.example.dontforgetyourmoney.data.repository.PostRepository.PostRepository;
 
 import java.util.List;
 
@@ -41,5 +40,17 @@ public class PostRepositoryImpl implements PostRepository {
     @Override
     public void deleteAllPosts() {
         postDao.deleteAllPosts();
+    }
+
+    @Override
+    public boolean existsByTitle(String title) {
+        Post post = postDao.getPostByTitle(title);
+        return post != null;
+    }
+
+    @Override
+    public int getPostIdByTitle(String title) {
+        Post post = postDao.getPostByTitle(title);
+        return post != null ? post.getId() : -1;
     }
 }

@@ -29,4 +29,7 @@ public interface PostDao {
 
     @Query("DELETE FROM posts")
     void deleteAllPosts();
+
+    @Query("SELECT * FROM posts WHERE title = :title LIMIT 1")
+    Post getPostByTitle(String title);
 }

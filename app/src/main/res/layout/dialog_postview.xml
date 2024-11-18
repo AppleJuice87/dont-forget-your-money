@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="16dp"
+    android:paddingTop="16dp"
     android:background="@color/white">
 
     <TextView
@@ -12,6 +12,7 @@
         android:layout_height="wrap_content"
         android:textSize="20sp"
         android:textStyle="bold"
+        android:layout_marginHorizontal="16dp"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
@@ -20,6 +21,7 @@
         android:id="@+id/dialogDate"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginHorizontal="16dp"
         android:textSize="14sp"
         android:textColor="@android:color/darker_gray"
         app:layout_constraintTop_toBottomOf="@id/dialogTitle"
@@ -35,10 +37,10 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
-    <TextView
+    <WebView
         android:id="@+id/dialogContent"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="650dp"
         android:layout_marginTop="8dp"
         app:layout_constraintTop_toBottomOf="@id/dialogCondition"
         app:layout_constraintStart_toStartOf="parent"

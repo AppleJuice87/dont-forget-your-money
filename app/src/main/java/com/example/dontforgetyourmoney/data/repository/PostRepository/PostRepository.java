@@ -23,4 +23,8 @@ public interface PostRepository {
 
     // 모든 게시글 삭제
     void deleteAllPosts();
+
+    boolean existsByTitle(String title);
+
+    int getPostIdByTitle(String title);
 }

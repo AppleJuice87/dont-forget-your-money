@@ -1,6 +1,8 @@
 package com.example.dontforgetyourmoney.data.parser;
 
 import android.util.Log;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
 
 import com.example.dontforgetyourmoney.data.model.Post;
 import com.example.dontforgetyourmoney.data.repository.PostRepository.PostRepository;
@@ -62,17 +64,37 @@ public class KUCS_ParserImpl implements Parser {
                 Document document = Jsoup.connect(url).get();
                 Elements postElements = document.select("tbody tr"); // tbody 안의 tr 요소 선택
 
+                //? 제일 최신의 게시물이 DB 에 포함되어 있으면 모든 작업을 멈춤.
+                String first = postElements.get(0).select(".td-subject strong").text(); // 제목 선택
+                if(postRepository.existsByTitle(first))
+                    break;
+
                 for (Element postElement : postElements) {
                     String title = postElement.select(".td-subject strong").text(); // 제목 선택
+
+                    // 같은 제목의 글이 이미 DB에 저장되어 있으면 추가하지 않고 넘어가는 코드
+                    if (postRepository.existsByTitle(title)) {
+                        int id = postRepository.getPostIdByTitle(title);
+                        Log.d("Test", "[mj1234] ID:" + id + " TITLE:" + title + " 이미존재!!!");
+                        continue; // 이미 존재하는 제목이면 다음으로 넘어감
+                    }
+
                     String date = postElement.select(".td-date").text(); // 날짜 선택
                     String link = postElement.select(".td-subject a").attr("href"); // 링크 선택
                     link = "https://www.kyungnam.ac.kr" + link; // 절대 경로로 변환
 
                     // 링크를 사용해 글 하나에 대한 사이트에 접속하여 본문 파싱
+                    //String content = fetchPostContent(link);
                     String content = fetchPostContent(link);
+
                     //String content = "예시 본문";
 
-                    Post post = new Post(title, date, content, link, null, null, null);
+                    //Post post = new Post(title, date, content, link, null, null, null);
+                    Post post = fillConditions(
+                            new Post(title, date, content, link,
+                                    null, null, null)
+                    );
+
                     postRepository.insert(post); // DB에 게시글 저장
 
                     Log.d("Test", "[mj1234]" + post.toString());
@@ -99,5 +121,17 @@ public class KUCS_ParserImpl implements Parser {
             Log.e("KUCS_ParserImpl", "Unexpected error fetching post content: " + e.getMessage());
             return ""; // 본문이 없을 경우 빈 문자열 반환
         }
+    }
+
+    public void loadContentInWebView(WebView webView, String url) {
+        webView.getSettings().setJavaScriptEnabled(true); // JavaScript 활성화
+        webView.setWebViewClient(new WebViewClient()); // WebViewClient 설정
+        webView.loadUrl(url); // URL 로드
+    }
+
+    public Post fillConditions(Post psot) {
+
+
+        return null;
     }
 }
