@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.dontforgetyourmoney.R;
 import com.example.dontforgetyourmoney.data.model.Post;
+import com.example.dontforgetyourmoney.data.parser.KUCS_ParserImpl;
 import com.example.dontforgetyourmoney.data.repository.PostRepository.PostRepository;
 import javax.inject.Inject;
 
@@ -27,6 +28,9 @@ public class HomeFragment extends Fragment {
 
     @Inject
     PostRepository postRepository;
+
+    @Inject
+    KUCS_ParserImpl parser;
 
     private RecyclerView recyclerView;
     private PostAdapter postAdapter;
@@ -60,6 +64,10 @@ public class HomeFragment extends Fragment {
             //postRepository.insert(new Post("제목1", "123", "본문1", "링크", 2, 10, 4.5));
 
             postRepository.deleteAllPosts();
+
+            //! 파싱 테스트
+            parser.parseAndSavePosts();
+
             postRepository.insert(new Post(String.format("랜덤제목 %d", (int) (Math.random() * 100)),
                     "123", "본문1", "링크", 2, 10, 4.5));
             for (int i = 0; i < 10; i++) {
