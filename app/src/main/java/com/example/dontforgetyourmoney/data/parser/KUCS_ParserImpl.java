@@ -69,8 +69,8 @@ public class KUCS_ParserImpl implements Parser {
                     link = "https://www.kyungnam.ac.kr" + link; // 절대 경로로 변환
 
                     // 링크를 사용해 글 하나에 대한 사이트에 접속하여 본문 파싱
-                    //String content = fetchPostContent(link);
-                    String content = "예시 본문";
+                    String content = fetchPostContent(link);
+                    //String content = "예시 본문";
 
                     Post post = new Post(title, date, content, link, null, null, null);
                     postRepository.insert(post); // DB에 게시글 저장
@@ -88,8 +88,10 @@ public class KUCS_ParserImpl implements Parser {
     private String fetchPostContent(String link) {
         try {
             Document postDocument = Jsoup.connect(link).get();
-            // 본문을 선택하는 적절한 CSS 선택자 사용
-            return postDocument.select(".post-content").text(); // 본문 선택
+            // <div class="view-con"> 클래스 하위의 HTML 가져오기
+            String contentHtml = postDocument.select(".view-con").html(); // HTML 내용 가져오기
+            // HTML에서 줄바꿈을 포함한 텍스트로 변환
+            return contentHtml.replaceAll("<br>", "\n").replaceAll("<[^>]+>", ""); // <br> 태그를 줄바꿈으로 변환하고, 나머지 HTML 태그 제거
         } catch (IOException e) {
             Log.e("KUCS_ParserImpl", "Error fetching post content: " + e.getMessage());
             return ""; // 본문이 없을 경우 빈 문자열 반환
