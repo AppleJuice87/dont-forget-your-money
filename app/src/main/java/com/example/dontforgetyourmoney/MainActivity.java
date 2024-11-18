@@ -20,14 +20,6 @@ import dagger.hilt.android.AndroidEntryPoint;
 
 @AndroidEntryPoint
 public class MainActivity extends AppCompatActivity {
-
-    @Inject
-    PostRepository postRepository;
-
-    @Inject
-    ConditionRepository conditionRepository;
-
-
     private ActivityMainBinding binding;
 
     @Override
@@ -47,7 +39,7 @@ public class MainActivity extends AppCompatActivity {
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
         NavigationUI.setupWithNavController(binding.navView, navController);
 
-        
+
     }
 
 }

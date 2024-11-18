@@ -1,38 +1,67 @@
 package com.example.dontforgetyourmoney.ui.home;
 
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
+import android.widget.Button;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.dontforgetyourmoney.databinding.FragmentHomeBinding;
+import com.example.dontforgetyourmoney.R;
+import com.example.dontforgetyourmoney.data.model.Post;
+import com.example.dontforgetyourmoney.data.repository.PostRepository.PostRepository;
+import javax.inject.Inject;
 
+import dagger.hilt.android.AndroidEntryPoint;
+
+import java.util.List;
+
+@AndroidEntryPoint
 public class HomeFragment extends Fragment {
 
-    private FragmentHomeBinding binding;
+    @Inject
+    PostRepository postRepository;
 
-    public View onCreateView(@NonNull LayoutInflater inflater,
-                             ViewGroup container, Bundle savedInstanceState) {
-        HomeViewModel homeViewModel =
-                new ViewModelProvider(this).get(HomeViewModel.class);
+    private RecyclerView recyclerView;
+    private PostAdapter postAdapter;
+    private Handler mainHandler = new Handler(Looper.getMainLooper()); //! 메인 스레드 핸들러
 
-        binding = FragmentHomeBinding.inflate(inflater, container, false);
-        View root = binding.getRoot();
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View root = inflater.inflate(R.layout.fragment_home, container, false);
+        recyclerView = root.findViewById(R.id.recyclerViewPosts);
+        Button btnRefresh = root.findViewById(R.id.btnRefresh);
 
-//        final TextView textView = binding.textHome;
-//        homeViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
+        btnRefresh.setOnClickListener(v -> refreshPosts());
+
+        postAdapter = new PostAdapter();
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        recyclerView.setAdapter(postAdapter);
+
+        refreshPosts();
         return root;
     }
 
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        binding = null;
+    private void refreshPosts() {
+        // 새로운 스레드에서 데이터베이스 작업 수행
+        new Thread(() -> {
+            // 데이터베이스 인스턴스 가져오기
+            // AppDatabase db = AppDatabase.getDatabase(getContext());
+            // db.postDao().insert(new Post("제목1", "제목2")); // 메인 스레드에서 직접 호출
+
+            // 게시글 삽입
+            postRepository.insert(new Post("제목1", "123", "본문1", "링크", 2, 10, 4.5));
+            //postRepository.deleteAllPosts();
+            // 게시글 가져오기
+            List<Post> posts = postRepository.getAllPosts();
+
+            // UI 업데이트는 메인 스레드에서 수행해야 하므로 핸들러 사용
+            mainHandler.post(() -> postAdapter.setPosts(posts));
+        }).start(); // 스레드 시작
     }
 }
