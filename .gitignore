@@ -299,3 +299,4 @@ fabric.properties
 config.properties
 # End of https://www.toptal.com/developers/gitignore/api/android,androidstudio,macos,windows,visualstudiocode,gradle,git
 
+config.properties
