@@ -137,6 +137,20 @@ public class KUCS_ParserImpl implements Parser {
 
         String content = post.getContent();
 
+        //! GPT api 테스트용 if 문
+
+        if(post.getTitle().contains("대동장학회")){
+
+            Log.d("[GPT]", "[GPT] 대동장학회 if문 통과");
+
+            ChatGPT gpt = new ChatGPT();
+
+            gpt.askQuestion(gpt.makePrompt(post.getContent()));
+        }
+
+
+
+
         // chatGPT api 를 사용해서 질문하고, 질문하여 답변을 받아오는 코드
 
         // 학년 검사 (~학년 이상 수혜가능)

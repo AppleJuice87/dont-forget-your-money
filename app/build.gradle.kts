@@ -73,4 +73,5 @@ dependencies {
     implementation (libs.hilt.android)
     annotationProcessor(libs.hilt.compiler)
     implementation("org.jsoup:jsoup:1.14.3") // Jsoup 의존성 추가
+    implementation("com.google.code.gson:gson:2.11.0")
 }
