@@ -12,10 +12,10 @@ public class Condition {
     private String keyword; // 키워드 (nullable)
     private Integer grade; // 학년 (nullable)
     private Integer incomeBracket; // 소득구간 (nullable)
-    private Float rating; // 평점 (nullable)
+    private Double rating; // 평점 (nullable)
 
     // 생성자, getter 및 setter 메서드
-    public Condition(String keyword, Integer grade, Integer incomeBracket, Float rating) {
+    public Condition(String keyword, Integer grade, Integer incomeBracket, Double rating) {
         this.keyword = keyword;
         this.grade = grade;
         this.incomeBracket = incomeBracket;
@@ -54,11 +54,11 @@ public class Condition {
         this.incomeBracket = incomeBracket;
     }
 
-    public Float getRating() {
+    public Double getRating() {
         return rating;
     }
 
-    public void setRating(Float rating) {
+    public void setRating(Double rating) {
         this.rating = rating;
     }
 }
