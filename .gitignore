@@ -296,5 +296,6 @@ fabric.properties
 
 !/gradle/wrapper/gradle-wrapper.jar
 
+config.properties
 # End of https://www.toptal.com/developers/gitignore/api/android,androidstudio,macos,windows,visualstudiocode,gradle,git
-설명
+
