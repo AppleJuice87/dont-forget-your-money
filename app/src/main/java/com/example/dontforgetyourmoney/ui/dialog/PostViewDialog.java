@@ -80,7 +80,7 @@ public class PostViewDialog extends Dialog {
             conditionText.append("소득구간:").append(post.getIncomeBracket()).append(" ");
         }
         if (post.getRating() != null) {
-            conditionText.append("평점:").append(post.getRating()).append(" 이상");
+            conditionText.append("평점:").append(post.getRating());
         }
         return conditionText.toString().trim();
     }

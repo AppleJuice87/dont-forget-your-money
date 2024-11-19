@@ -32,6 +32,7 @@
         android:id="@+id/dialogCondition"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginHorizontal="16dp"
         android:textSize="14sp"
         app:layout_constraintTop_toBottomOf="@id/dialogDate"
         app:layout_constraintStart_toStartOf="parent"

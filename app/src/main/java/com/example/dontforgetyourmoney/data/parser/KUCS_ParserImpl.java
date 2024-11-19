@@ -90,7 +90,7 @@ public class KUCS_ParserImpl implements Parser {
                     //Post post = new Post(title, date, content, link, null, null, null);
                     Post post = fillConditions(
                             new Post(title, date, content, link,
-                                    null, null, null)
+                                    "판별불가", "판별불가", "판별불가")
                     );
 
                     postRepository.insert(post); // DB에 게시글 저장
@@ -136,11 +136,15 @@ public class KUCS_ParserImpl implements Parser {
     public Post fillConditions(Post post) {
 
         String content = post.getContent();
+        if (content == null || content.isEmpty()) {
+            Log.d("[Parse]", "[Parse] 본문이 없습니다.");
+            return post;
+        }
         String conditions;
 
         //! GPT api 테스트용 if 문
-        if(post.getTitle().contains("대동장학회")){
-        //if(post.getGrade() == null){
+        //if(post.getTitle().contains("대동장학회")){
+        if(post.getGrade() == null || post.getGrade().equals("판별불가")){
             // Log.d("[GPT]", "[GPT] 대동장학회 if문 통과");
 
             ChatGPT gpt = new ChatGPT();
@@ -169,17 +173,11 @@ public class KUCS_ParserImpl implements Parser {
                         if (value.contains("-")) {
                             post.setIncomeBracket(value);
                             Log.d("[Parse]", "[Parse] 소득구간 진입:" + value);
-                        } else {
-                            post.setIncomeBracket("판별불가");
-                            Log.d("[Parse]", "[Parse] 소득구간 판별불가");
                         }
                     } else if (key.contains("평점")) {
                         if (value.contains(".")) {
                             post.setRating(value);
                             Log.d("[Parse]", "[Parse] 평점 진입:" + value);
-                        } else {
-                            post.setTitle("판별불가");
-                            Log.d("[Parse]", "[Parse] 평점 판별불가");
                         }
                     }
                 }
