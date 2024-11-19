@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="income_brackets">
+        <item>모두보기</item>
+        <item>1구간</item>
+        <item>2구간</item>
+        <item>3구간</item>
+        <item>4구간</item>
+        <item>5구간</item>
+        <item>6구간</item>
+        <item>7구간</item>
+        <item>8구간</item>
+        <item>9구간</item>
+        <item>10구간</item>
+    </string-array>
+</resources>

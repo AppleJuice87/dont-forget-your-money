@@ -22,6 +22,17 @@ public class Condition {
         this.rating = rating;
     }
 
+    @Override
+    public String toString() {
+        return "Condition{" +
+                "id=" + id +
+                ", keyword='" + keyword + '\'' +
+                ", grade=" + grade +
+                ", incomeBracket=" + incomeBracket +
+                ", rating=" + rating +
+                '}';
+    }
+
     public int getId() {
         return id;
     }

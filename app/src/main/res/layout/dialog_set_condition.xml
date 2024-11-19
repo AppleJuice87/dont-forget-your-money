@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="16dp"
+        android:text="검색 키워드 설정"
+        android:textColor="@color/black" />
+
+    <EditText
+        android:id="@+id/etKeyword"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="검색할 키워드 입력" />
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="24dp"
+        android:text="나의 학년"
+        android:textColor="@color/black" />
+
+    <RadioGroup
+        android:id="@+id/rgGrade"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+        <RadioButton android:id="@+id/rbGrade1" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="1학년" />
+        <RadioButton android:id="@+id/rbGrade2" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="2학년" />
+        <RadioButton android:id="@+id/rbGrade3" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="3학년" />
+        <RadioButton android:id="@+id/rbGrade4" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="4학년" />
+
+        <TextView
+            android:id="@+id/textView3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="24dp"
+            android:text="나의 소득분위"
+            android:textColor="@color/black" />
+
+    </RadioGroup>
+
+    <Spinner
+        android:id="@+id/spIncomeBracket"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:id="@+id/textView4"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="24dp"
+        android:text="나의 학점 평균"
+        android:textColor="@color/black" />
+
+    <EditText
+        android:id="@+id/etGPA"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="학점 평점 입력 (0.00 ~ 4.5)"
+        android:paddingBottom="8dp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="end">
+
+        <Button
+            android:id="@+id/btnCancel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="취소" />
+
+        <Button
+            android:id="@+id/btnConfirm"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="확인" />
+    </LinearLayout>
+</LinearLayout>
