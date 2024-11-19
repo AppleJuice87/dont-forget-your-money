@@ -136,16 +136,64 @@ public class KUCS_ParserImpl implements Parser {
     public Post fillConditions(Post post) {
 
         String content = post.getContent();
+        String conditions;
 
         //! GPT api 테스트용 if 문
-
         if(post.getTitle().contains("대동장학회")){
-
-            Log.d("[GPT]", "[GPT] 대동장학회 if문 통과");
+        //if(post.getGrade() == null){
+            // Log.d("[GPT]", "[GPT] 대동장학회 if문 통과");
 
             ChatGPT gpt = new ChatGPT();
 
-            gpt.askQuestion(gpt.makePrompt(post.getContent()));
+            conditions = gpt.askQuestion(gpt.makePrompt(post.getContent()));
+
+            // conditions의 모든 공백을 없애고, 줄바꿈 단위로 잘라서 String배열에 저장.
+            String[] conditionArray = conditions.replaceAll("[ \t]+", "").split("\n");
+
+            // 다시한번 :문자를 기준으로 잘라서 뒤에 있는 값을 Post의 grade, incomeBracket, rating 에 저장
+            for (String condition : conditionArray) {
+                String[] parts = condition.split(":");
+
+                Log.d("[Parse]", "[Parse] condition:" + condition);
+
+                // : 이 하나 포함되어 있으면 2개로 나누어지고, :이 없으면 length가 1임.
+                if (parts.length == 2) {
+                    String key = parts[0].trim();
+                    String value = parts[1].trim();
+
+                    if (key.contains("학년")) {
+                        post.setGrade(value);
+                        Log.d("[Parse]", "[Parse] 학년 진입:" + value);
+
+                    } else if (key.contains("소득구간")) {
+                        if (value.contains("-")) {
+                            post.setIncomeBracket(value);
+                            Log.d("[Parse]", "[Parse] 소득구간 진입:" + value);
+                        } else {
+                            post.setIncomeBracket("판별불가");
+                            Log.d("[Parse]", "[Parse] 소득구간 판별불가");
+                        }
+                    } else if (key.contains("평점")) {
+                        if (value.contains(".")) {
+                            post.setRating(value);
+                            Log.d("[Parse]", "[Parse] 평점 진입:" + value);
+                        } else {
+                            post.setTitle("판별불가");
+                            Log.d("[Parse]", "[Parse] 평점 판별불가");
+                        }
+                    }
+                }
+            }
+
+            // 테스트로그
+            Log.d("[Parse]", "[Parse] 컨디션 추가완료 " +
+                    "Title:" + post.getTitle() +
+                    " Conditions:" + post.getGrade() +
+                    " | " + post.getIncomeBracket() +
+                    " | " + post.getRating());
+
+            // post return
+            return post;
         }
 
 

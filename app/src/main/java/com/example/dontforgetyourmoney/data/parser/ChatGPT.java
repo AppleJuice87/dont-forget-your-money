@@ -136,6 +136,7 @@ public class ChatGPT {
         }
 
         Log.d("[GPT]", "[GPT] 받은 Content:" + responseText);
+        Log.d("[Parse]", "[Parse] 받은 Content:" + responseText);
         return responseText; // API 응답 반환
     }
 

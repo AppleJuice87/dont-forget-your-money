@@ -8,6 +8,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import com.example.dontforgetyourmoney.R;
 import com.example.dontforgetyourmoney.data.model.Post;
+import com.example.dontforgetyourmoney.data.parser.ConditionGen;
 import com.example.dontforgetyourmoney.ui.dialog.PostViewDialog;
 
 import java.util.ArrayList;
@@ -29,6 +30,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
         Post post = posts.get(position);
         holder.title.setText(post.getTitle());
         holder.date.setText(post.getDate());
+        holder.conditions.setText(ConditionGen.getConditions(post));
         holder.itemView.setOnClickListener(v -> {
             // 글 목록에서 글을 클릭하면 글 열람 다이얼로그 화면을 표시.
             PostViewDialog dialog = new PostViewDialog(holder.itemView.getContext(), post);
@@ -61,12 +63,13 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
     }
 
     static class PostViewHolder extends RecyclerView.ViewHolder {
-        TextView title, date;
+        TextView title, date, conditions;
 
         PostViewHolder(View itemView) {
             super(itemView);
             title = itemView.findViewById(R.id.postTitle);
             date = itemView.findViewById(R.id.postDate);
+            conditions = itemView.findViewById(R.id.postConditions);
         }
     }
 }

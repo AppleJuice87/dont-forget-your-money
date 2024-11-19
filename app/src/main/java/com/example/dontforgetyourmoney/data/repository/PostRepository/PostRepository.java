@@ -3,6 +3,7 @@ package com.example.dontforgetyourmoney.data.repository.PostRepository;
 import com.example.dontforgetyourmoney.data.model.Post;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface PostRepository {
     
@@ -27,4 +28,6 @@ public interface PostRepository {
     boolean existsByTitle(String title);
 
     int getPostIdByTitle(String title);
+
+    Post getPostByTitle(String title);
 }

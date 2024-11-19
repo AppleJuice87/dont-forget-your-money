@@ -14,12 +14,12 @@ public class Post {
     private String date; // 작성일
     private String content; // 본문
     private String link; // 게시글 링크
-    private Integer grade; // 학년 (nullable)
-    private Integer incomeBracket; // 소득구간 (nullable)
-    private Double rating; // 평점 (nullable)
+    private String grade; // 학년 (nullable)
+    private String incomeBracket; // 소득구간 (nullable)
+    private String rating; // 평점 (nullable)
 
     // 생성자, getter 및 setter 메서드
-    public Post(String title, String date, String content, String link, Integer grade, Integer incomeBracket, Double rating) {
+    public Post(String title, String date, String content, String link, String grade, String incomeBracket, String rating) {
         this.title = title;
         this.date = date;
         this.content = content;
@@ -89,27 +89,27 @@ public class Post {
         this.link = link;
     }
 
-    public Integer getGrade() {
+    public String getGrade() {
         return grade;
     }
 
-    public void setGrade(Integer grade) {
+    public void setGrade(String grade) {
         this.grade = grade;
     }
 
-    public Integer getIncomeBracket() {
+    public String getIncomeBracket() {
         return incomeBracket;
     }
 
-    public void setIncomeBracket(Integer incomeBracket) {
+    public void setIncomeBracket(String incomeBracket) {
         this.incomeBracket = incomeBracket;
     }
 
-    public Double getRating() {
+    public String getRating() {
         return rating;
     }
 
-    public void setRating(Double rating) {
+    public void setRating(String rating) {
         this.rating = rating;
     }
 }

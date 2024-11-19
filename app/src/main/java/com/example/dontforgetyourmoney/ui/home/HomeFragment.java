@@ -64,12 +64,13 @@ public class HomeFragment extends Fragment {
             //postRepository.insert(new Post("제목1", "123", "본문1", "링크", 2, 10, 4.5));
 
             //postRepository.deleteAllPosts();
-//            postRepository.delete(
-//                    postRepository.getPostById(
-//                            postRepository.getPostIdByTitle("2024년 대동장학회(대동백화점) 장학생 선발 의뢰")));
+
+//            if(postRepository.existsByTitle("2024년 대동장학회(대동백화점) 장학생 선발 의뢰"))
+//                postRepository.delete(
+//                        postRepository.getPostById(
+//                                postRepository.getPostIdByTitle("2024년 대동장학회(대동백화점) 장학생 선발 의뢰")));
 
             //! 파싱 테스트
-
             parser.parseAndSavePosts();
 
 //            postRepository.insert(new Post(String.format("랜덤제목 %d", (int) (Math.random() * 100)),

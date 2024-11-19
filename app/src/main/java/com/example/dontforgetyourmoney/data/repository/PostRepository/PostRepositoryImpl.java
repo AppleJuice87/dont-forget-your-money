@@ -53,4 +53,9 @@ public class PostRepositoryImpl implements PostRepository {
         Post post = postDao.getPostByTitle(title);
         return post != null ? post.getId() : -1;
     }
+
+    @Override
+    public Post getPostByTitle(String title) {
+        return postDao.getPostByTitle(title);
+    }
 }

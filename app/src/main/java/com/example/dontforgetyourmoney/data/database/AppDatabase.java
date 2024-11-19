@@ -10,7 +10,7 @@ import com.example.dontforgetyourmoney.data.DAO.PostDao;
 import com.example.dontforgetyourmoney.data.model.Condition;
 import com.example.dontforgetyourmoney.data.model.Post;
 
-@Database(entities = {Post.class, Condition.class}, version = 1)
+@Database(entities = {Post.class, Condition.class}, version = 2)
 public abstract class AppDatabase extends RoomDatabase {
     
     public abstract PostDao postDao(); // PostDao를 반환하는 메서드
