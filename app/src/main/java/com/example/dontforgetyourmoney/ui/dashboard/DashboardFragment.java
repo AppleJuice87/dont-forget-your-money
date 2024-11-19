@@ -21,9 +21,17 @@ import com.example.dontforgetyourmoney.databinding.FragmentDashboardBinding;
 
 import com.example.dontforgetyourmoney.data.model.Condition;
 
+import javax.inject.Inject;
+
+import dagger.hilt.android.AndroidEntryPoint;
+
+@AndroidEntryPoint
 public class DashboardFragment extends Fragment {
 
-    private Condition condition;
+    //* App-level 에서 Condition 객체 하나를 관리 해 주기 위해서 Hilt 를 이용한 싱글톤 패턴 사용.
+    @Inject
+    Condition condition;
+
     private FragmentDashboardBinding binding;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -57,7 +65,7 @@ public class DashboardFragment extends Fragment {
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spIncomeBracket.setAdapter(adapter);
 
-        // 기존 Condition 객체의 값이 존재하면 UI에 설정
+        // 기존 Condition 객체의 값이 존재하면 UI에 set
         if (condition != null) {
             if (condition.getKeyword() != null) {
                 etKeyword.setText(condition.getKeyword());
@@ -118,7 +126,12 @@ public class DashboardFragment extends Fragment {
             Integer grade = getGradeFromRadioButtonId(selectedGradeId);
 
             // Condition 객체에 값 설정
-            condition = new Condition(keyword, grade, incomeBracket, gpa);
+            //! condition = new Condition(keyword, grade, incomeBracket, gpa);
+
+            condition.setKeyword(keyword);
+            condition.setGrade(grade);
+            condition.setIncomeBracket(incomeBracket);
+            condition.setRating(gpa);
 
             Log.d("DashboardFragment", "Condition: " + condition.toString());
 
