@@ -33,6 +33,24 @@ public class Condition {
                 '}';
     }
 
+    public String getConditions() {
+        // 있으면 조건 출력, 없으면 아예 안넣음
+        StringBuilder sb = new StringBuilder();
+        if (keyword != null && !keyword.isEmpty()) {
+            sb.append("키워드:").append(keyword).append(" ");
+        }
+        if (grade != null && grade != 0) {
+            sb.append("학년:").append(grade).append(" ");
+        }
+        if (incomeBracket != null && incomeBracket != 0) {
+            sb.append("소득구간:").append(incomeBracket).append(" ");
+        }
+        if (rating != null && rating != 0) {
+            sb.append("평점:").append(rating);
+        }
+        return sb.toString().isEmpty() ? ": 선택된 검색 조건 없음" : sb.toString();
+    }
+
     public int getId() {
         return id;
     }

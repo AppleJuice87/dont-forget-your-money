@@ -2,6 +2,8 @@ package com.example.dontforgetyourmoney.ui.dashboard;
 
 import android.app.AlertDialog;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,15 +13,24 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.dontforgetyourmoney.R;
+import com.example.dontforgetyourmoney.data.model.Post;
+import com.example.dontforgetyourmoney.data.repository.PostRepository.PostRepository;
 import com.example.dontforgetyourmoney.databinding.FragmentDashboardBinding;
 
 import com.example.dontforgetyourmoney.data.model.Condition;
+import com.example.dontforgetyourmoney.ui.home.PostAdapter;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.inject.Inject;
 
@@ -32,7 +43,14 @@ public class DashboardFragment extends Fragment {
     @Inject
     Condition condition;
 
+    @Inject
+    PostRepository postRepository;
+
     private FragmentDashboardBinding binding;
+    private RecyclerView recyclerView;
+    private PostAdapter postAdapter;
+
+    private Handler mainHandler = new Handler(Looper.getMainLooper()); //! 메인 스레드 핸들러
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -43,6 +61,16 @@ public class DashboardFragment extends Fragment {
         View root = binding.getRoot();
 
         binding.btnSearchTool.setOnClickListener(v -> showSetConditionDialog());
+        binding.tvCondition.setText(condition.getConditions());
+
+        //* RecyclerView 세팅
+        //recyclerView = binding.recyclerViewPostsByConditions;
+        recyclerView = root.findViewById(R.id.recyclerViewPostsByConditions);
+        postAdapter = new PostAdapter();
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        recyclerView.setAdapter(postAdapter);
+
+        refreshPostsByCondition();
 
         return root;
     }
@@ -63,6 +91,7 @@ public class DashboardFragment extends Fragment {
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getContext(),
                 R.array.income_brackets, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
         spIncomeBracket.setAdapter(adapter);
 
         // 기존 Condition 객체의 값이 존재하면 UI에 set
@@ -135,10 +164,69 @@ public class DashboardFragment extends Fragment {
 
             Log.d("DashboardFragment", "Condition: " + condition.toString());
 
+            binding.tvCondition.setText(condition.getConditions());
             dialog.dismiss();
         });
 
         dialog.show();
+    }
+
+    private void refreshPostsByCondition() {
+
+        // keyword 가 존재하면 변수에 저장, 없으면 "" 저장
+        String keyword = condition.getKeyword() != null ?
+                condition.getKeyword().replaceAll("\\s+", "") : "";
+
+        Integer grade = condition.getGrade() != null ? condition.getGrade() : 0;
+        Integer incomeBracket = condition.getIncomeBracket() != null ? condition.getIncomeBracket() : Integer.MAX_VALUE;
+        Double rating = condition.getRating() != null ? condition.getRating() : 0;
+
+        new Thread(() -> {
+            List<Post> posts = postRepository.getAllPosts();
+
+            // 조건에 맞는 게시물 필터링
+//            List<Post> filteredPosts = posts.stream()
+//                    .filter(post -> keyword.isBlank() ||
+//                            post.getTitle().contains(keyword) ||
+//                            post.getContent().replaceAll("\\s+", "").contains(keyword))
+//
+//                    .filter(post -> grade == 0 || post.getGrade().contains(grade.toString()))
+//                    .filter(post -> Double.parseDouble(post.getIncomeBracket()) <= incomeBracket)
+//                    //.filter(post -> post.getRating() == rating)
+//                    .collect(Collectors.toList());
+
+            if (keyword.isBlank()) {
+                // 조건 적용 x
+            } else {
+                posts = posts.stream()
+                        .filter(post ->
+                                (post.getTitle().contains(keyword) ||
+                                        post.getContent().replaceAll("\\s+", "").contains(keyword)))
+                        .collect(Collectors.toList());
+            }
+
+            if (grade == 0) {
+                // 조건 적용 x
+            } else {
+                posts = posts.stream()
+                        .filter(post -> post.getGrade().equals("판별불가") || post.getGrade().contains(grade.toString()))
+                        .collect(Collectors.toList());
+            }
+
+            posts = posts.stream()
+                    .filter(post -> {
+                        String str = post.getIncomeBracket();
+                        if (str.equals("판별불가")) return true;
+                        int low = Integer.parseInt(str.trim().split("-")[0]);
+                        int high = Integer.parseInt(str.trim().split("-")[1]);
+                        return low <= incomeBracket && incomeBracket <= high;
+                    })
+                    .collect(Collectors.toList());
+
+            // UI 업데이트는 메인 스레드에서 수행해야 하므로 핸들러 사용
+            List<Post> finalPosts = posts;
+            mainHandler.post(() -> postAdapter.setPosts(finalPosts));
+        }).start();
     }
 
     private int getRadioButtonIdForGrade(Integer grade) {

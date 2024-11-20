@@ -193,10 +193,6 @@ public class KUCS_ParserImpl implements Parser {
             // post return
             return post;
         }
-
-
-
-
         // chatGPT api 를 사용해서 질문하고, 질문하여 답변을 받아오는 코드
 
         // 학년 검사 (~학년 이상 수혜가능)
