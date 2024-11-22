@@ -69,11 +69,11 @@ public class HomeFragment extends Fragment {
             });
 
             //! 테스트 용도로 3초 대기
-//            try {
-//                Thread.sleep(1000);
-//            } catch (InterruptedException e) {
-//                e.printStackTrace();
-//            }
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
 
             // 데이터베이스 인스턴스 가져오기
             // AppDatabase db = AppDatabase.getDatabase(getContext());
