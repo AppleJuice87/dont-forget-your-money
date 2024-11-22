@@ -49,6 +49,10 @@ public class DashboardFragment extends Fragment {
     Condition condition;
 
     @Inject
+    @Named("MyCondition")
+    Condition myCondition;
+
+    @Inject
     PostRepository postRepository;
 
     private FragmentDashboardBinding binding;
@@ -66,6 +70,15 @@ public class DashboardFragment extends Fragment {
         View root = binding.getRoot();
 
         binding.btnSearchTool.setOnClickListener(v -> showSetConditionDialog());
+        binding.btnApplyMyCondition.setOnClickListener(v -> {
+            condition.setKeyword(myCondition.getKeyword());
+            condition.setGrade(myCondition.getGrade());
+            condition.setIncomeBracket(myCondition.getIncomeBracket());
+            condition.setRating(myCondition.getRating());
+
+            binding.tvCondition.setText(condition.getConditions());
+            refreshPostsByCondition();
+        });
 
         //Log.d("DashboardFragment", "컨디션 텍스트: " + condition.toString());
         binding.tvCondition.setText(condition.getConditions());
