@@ -25,8 +25,10 @@ import com.google.gson.Gson;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import javax.inject.Named;
+
 import dagger.hilt.android.AndroidEntryPoint;
-import jakarta.inject.Inject;
+import javax.inject.Inject;
 
 @AndroidEntryPoint
 public class MyPageFragment extends Fragment {
@@ -35,6 +37,16 @@ public class MyPageFragment extends Fragment {
 
     @Inject
     ConditionRepository conditionRepository;
+
+    @Inject
+    @Named("MyCondition")
+    Condition myCondition;
+
+    @Inject
+    SharedPreferences sharedPreferences;
+
+    @Inject
+    Gson gson;
 
     public MyPageFragment() {
         // Required empty public constructor
@@ -49,15 +61,23 @@ public class MyPageFragment extends Fragment {
 
         binding.btnSetMyCondition.setOnClickListener(v -> showSetConditionDialog());
 
+        // 초기화 버튼 클릭 시 초기화
+        binding.btnClearMyCondition.setOnClickListener(v -> {
+            myCondition.clear();
+            myCondition.saveAsMyCondition(sharedPreferences, gson);
+            refreshMyConditionText();
+        });
+
         refreshMyConditionText();
         return root;
     }
 
     private void refreshMyConditionText() {
-        if (binding.tvMyCondition.getText().equals(": 선택된 검색조건 없음")) {
-
-        }else{
-            binding.tvMyCondition.setText("");
+        String str = myCondition.getConditions();
+        if (str.equals(": 선택된 검색조건 없음")) {
+            binding.tvMyCondition.setText("| 설정된 프로필 없음");
+        } else {
+            binding.tvMyCondition.setText(myCondition.getConditions());
         }
     }
 
@@ -78,14 +98,13 @@ public class MyPageFragment extends Fragment {
         dialogBinding.btnConfirm.setText("저장");
 
         // SharedPreferences 에서 컨디션 객체 가져오기
-        SharedPreferences sharedPreferences = getContext().getSharedPreferences("my-condition", Context.MODE_PRIVATE);
-        String conditionJson = sharedPreferences.getString("my-condition", null);
-        Condition myCondition = null;
-        if (conditionJson != null) { // SharedPreferences 에 이미 저장된 my-condition key-value가 존재하면, 객체로 변환
-            myCondition = new Gson().fromJson(conditionJson, Condition.class);
-        } else { // SharedPreferences 에 이미 저장된 my-condition key-value가 없으면, 새로운 Condition 객체 생성
-            myCondition = new Condition(null, null, null, null);
-        }   
+//        String conditionJson = sharedPreferences.getString("my-condition", null);
+//        Condition myCondition = null;
+//        if (conditionJson != null) { // SharedPreferences 에 이미 저장된 my-condition key-value가 존재하면, 객체로 변환
+//            myCondition = new Gson().fromJson(conditionJson, Condition.class);
+//        } else { // SharedPreferences 에 이미 저장된 my-condition key-value가 없으면, 새로운 Condition 객체 생성
+//            myCondition = new Condition(null, null, null, null);
+//        }
 
         // 소득구간 스피너 설정
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getContext(),
@@ -156,15 +175,20 @@ public class MyPageFragment extends Fragment {
             //! DashBoard 의 singleton 객체에는 이렇게 하면안됨.
             //! condition = new Condition(keyword, grade, incomeBracket, gpa);
 
-            Condition finalCondition = new Condition(keyword, grade, incomeBracket, gpa);
-
-            Log.d("DashboardFragment", "나의 컨디션 세팅됨 Condition: " + finalCondition.toString());
-            //binding.tvCondition.setText(finalCondition.getConditions());
+            myCondition.setKeyword(keyword);
+            myCondition.setGrade(grade);
+            myCondition.setIncomeBracket(incomeBracket);
+            myCondition.setRating(gpa);
 
             //* finalCondition 을 SharedPreferences 에 저장
-            SharedPreferences.Editor editor = sharedPreferences.edit();
-            editor.putString("my-condition", new Gson().toJson(finalCondition));
-            editor.apply();
+//            SharedPreferences.Editor editor = sharedPreferences.edit();
+//            editor.putString("my-condition", new Gson().toJson(finalCondition));
+//            editor.apply();
+            //* Hilt 로 DI 해서 사용
+            myCondition.saveAsMyCondition(sharedPreferences, gson);
+
+            Log.d("DashboardFragment", "나의 컨디션 세팅됨 Condition: " + myCondition.toString());
+            //binding.tvCondition.setText(finalCondition.getConditions());
 
             refreshMyConditionText();
             dialog.dismiss();

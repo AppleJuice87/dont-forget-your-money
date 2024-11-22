@@ -13,23 +13,43 @@
             android:id="@+id/textView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="내 정보 " />
+            android:text="내 정보 "
+            android:textSize="16sp" />
 
         <TextView
             android:id="@+id/tvMyCondition"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="| 설정된 프로필 없음" />
+            android:text="| 설정된 프로필 없음"
+            android:textSize="16sp" />
 
     </LinearLayout>
 
-    <Button
-        android:id="@+id/btnSetMyCondition"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="right"
-        android:text="나의 조건 설정" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="16dp"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/btnClearMyCondition"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="left"
+            android:layout_weight="1"
+            android:text="나의 조건 초기화" />
+
+        <Button
+            android:id="@+id/btnSetMyCondition"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right"
+            android:layout_weight="1"
+            android:text="나의 조건 설정" />
+
+
+    </LinearLayout>
 
 
 </LinearLayout>

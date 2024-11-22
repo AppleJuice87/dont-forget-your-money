@@ -36,6 +36,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import javax.inject.Inject;
+import javax.inject.Named;
 
 import dagger.hilt.android.AndroidEntryPoint;
 
@@ -44,6 +45,7 @@ public class DashboardFragment extends Fragment {
 
     //* App-level 에서 Condition 객체 하나를 관리 해 주기 위해서 Hilt 를 이용한 싱글톤 패턴 사용.
     @Inject
+    @Named("SearchCondition")
     Condition condition;
 
     @Inject
@@ -85,7 +87,6 @@ public class DashboardFragment extends Fragment {
         recyclerView.setAdapter(postAdapter);
 
         refreshPostsByCondition();
-
         return root;
     }
 

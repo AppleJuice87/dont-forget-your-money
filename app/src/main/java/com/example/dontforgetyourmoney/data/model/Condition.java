@@ -1,7 +1,14 @@
 package com.example.dontforgetyourmoney.data.model;
 
+import android.content.Context;
+import android.content.SharedPreferences;
+
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
+
+import com.google.gson.Gson;
+
+import dagger.hilt.android.qualifiers.ApplicationContext;
 
 @Entity(tableName = "conditions") // 테이블 이름 지정
 public class Condition {
@@ -27,6 +34,12 @@ public class Condition {
         this.grade = null;
         this.incomeBracket = null;
         this.rating = null;
+    }
+
+    public void saveAsMyCondition(SharedPreferences sharedPreferences, Gson gson) {
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString("my-condition", gson.toJson(this));
+        editor.apply();
     }
 
     @Override
