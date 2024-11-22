@@ -14,6 +14,7 @@ import android.widget.EditText;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -63,7 +64,18 @@ public class DashboardFragment extends Fragment {
         View root = binding.getRoot();
 
         binding.btnSearchTool.setOnClickListener(v -> showSetConditionDialog());
+
+        //Log.d("DashboardFragment", "컨디션 텍스트: " + condition.toString());
         binding.tvCondition.setText(condition.getConditions());
+        binding.btnClearCondition.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                condition.clear();
+                binding.tvCondition.setText(condition.getConditions());
+                Toast.makeText(getContext(), "검색조건이 초기화 되었습니다", Toast.LENGTH_SHORT).show();
+                refreshPostsByCondition();
+            }
+        });
 
         //* RecyclerView 세팅
         //recyclerView = binding.recyclerViewPostsByConditions;

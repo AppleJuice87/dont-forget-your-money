@@ -22,6 +22,13 @@ public class Condition {
         this.rating = rating;
     }
 
+    public void clear() {
+        this.keyword = null;
+        this.grade = null;
+        this.incomeBracket = null;
+        this.rating = null;
+    }
+
     @Override
     public String toString() {
         return "Condition{" +
@@ -48,7 +55,7 @@ public class Condition {
         if (rating != null) {
             sb.append("평점:").append(rating);
         }
-        return sb.toString().isEmpty() ? ": 선택된 검색 조건 없음" : sb.toString();
+        return sb.toString().isEmpty() ? ": 선택된 검색조건 없음" : sb.toString();
     }
 
     public int getId() {

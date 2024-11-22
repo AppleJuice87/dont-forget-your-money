@@ -51,11 +51,11 @@
         </LinearLayout>
 
         <Button
-            android:id="@+id/btnSearch"
+            android:id="@+id/btnClearCondition"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="right"
-            android:text="검색" />
+            android:text="검색조건 초기화" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerViewPostsByConditions"
