@@ -29,6 +29,8 @@ import com.example.dontforgetyourmoney.databinding.FragmentDashboardBinding;
 import com.example.dontforgetyourmoney.data.model.Condition;
 import com.example.dontforgetyourmoney.ui.home.PostAdapter;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -162,9 +164,10 @@ public class DashboardFragment extends Fragment {
             condition.setIncomeBracket(incomeBracket);
             condition.setRating(gpa);
 
-            Log.d("DashboardFragment", "Condition: " + condition.toString());
+            Log.d("DashboardFragment", "컨디션 세팅됨 Condition: " + condition.toString());
 
             binding.tvCondition.setText(condition.getConditions());
+            refreshPostsByCondition();
             dialog.dismiss();
         });
 
@@ -173,16 +176,17 @@ public class DashboardFragment extends Fragment {
 
     private void refreshPostsByCondition() {
 
-        // keyword 가 존재하면 변수에 저장, 없으면 "" 저장
-        String keyword = condition.getKeyword() != null ?
-                condition.getKeyword().replaceAll("\\s+", "") : "";
-
-        Integer grade = condition.getGrade() != null ? condition.getGrade() : 0;
-        Integer incomeBracket = condition.getIncomeBracket() != null ? condition.getIncomeBracket() : Integer.MAX_VALUE;
-        Double rating = condition.getRating() != null ? condition.getRating() : 0;
-
         new Thread(() -> {
-            List<Post> posts = postRepository.getAllPosts();
+            // keyword 가 존재하면 변수에 저장, 없으면 "" 저장
+            String keyword = condition.getKeyword() != null ?
+                    condition.getKeyword().replaceAll("\\s+", "") : "";
+
+            Integer grade = condition.getGrade() != null ? condition.getGrade() : 0;
+            Integer incomeBracket = condition.getIncomeBracket() != null ? condition.getIncomeBracket() : 0;
+            Double rating = condition.getRating() != null ? condition.getRating() : null;
+
+            //List<Post> posts = postRepository.getAllPosts();
+            List<Post> posts = Collections.synchronizedList(postRepository.getAllPosts());
 
             // 조건에 맞는 게시물 필터링
 //            List<Post> filteredPosts = posts.stream()
@@ -195,36 +199,111 @@ public class DashboardFragment extends Fragment {
 //                    //.filter(post -> post.getRating() == rating)
 //                    .collect(Collectors.toList());
 
+            //* 1. 키워드 검색
+
             if (keyword.isBlank()) {
                 // 조건 적용 x
             } else {
-                posts = posts.stream()
-                        .filter(post ->
-                                (post.getTitle().contains(keyword) ||
-                                        post.getContent().replaceAll("\\s+", "").contains(keyword)))
-                        .collect(Collectors.toList());
+                // posts = posts.stream()
+                //         .filter(post ->
+                //                 (post.getTitle().contains(keyword) ||
+                //                         post.getContent().replaceAll("\\s+", "").contains(keyword)))
+                //         .collect(Collectors.toList());
+
+                List<Post> filteredPosts = new ArrayList<>();
+                for (Post post : posts) {
+                    if (post.getTitle().contains(keyword) || post.getContent().replaceAll("\\s+", "").contains(keyword)) {
+                        filteredPosts.add(post);
+                    }
+                }
+                posts = null;
+                posts = filteredPosts;
             }
+
+            //* 2. 학년 검색
 
             if (grade == 0) {
                 // 조건 적용 x
             } else {
+                // posts = posts.stream()
+                //         .filter(post -> post.getGrade().equals("판별불가") || post.getGrade().contains(grade.toString()))
+                //         .collect(Collectors.toList());
+
+                List<Post> filteredPosts = new ArrayList<>();
+                for (Post post : posts) {
+                    if (post.getGrade().equals("판별불가") || post.getGrade().contains(grade.toString())) {
+                        filteredPosts.add(post);
+                    }
+                }
+                posts = null;
+                posts = filteredPosts;
+            }
+
+            //* 3. 소득구간 검색
+
+            // posts = posts.stream()
+            //         .filter(post -> {
+            //             String str = post.getIncomeBracket();
+            //             if (str.equals("판별불가")) return true;
+            //             int low = Integer.parseInt(str.trim().split("-")[0]);
+            //             int high = Integer.parseInt(str.trim().split("-")[1]);
+            //             return low <= incomeBracket && incomeBracket <= high;
+            //         })
+            //         .collect(Collectors.toList());
+
+
+            if(incomeBracket != 0){
+                List<Post> filteredPosts = new ArrayList<>();
+                for (Post post : posts) {
+                    String str = post.getIncomeBracket();
+                    if (str.equals("판별불가")) {
+                        filteredPosts.add(post);
+                    } else {
+                        int low = Integer.parseInt(str.trim().split("-")[0]);
+                        int high = Integer.parseInt(str.trim().split("-")[1]);
+                        if (low <= incomeBracket && incomeBracket <= high) {
+                            filteredPosts.add(post);
+                        }
+                    }
+                }
+                posts = null;
+                posts = filteredPosts;
+            }
+
+            //* 4. 평점 검색
+
+            if (rating != null) {
                 posts = posts.stream()
-                        .filter(post -> post.getGrade().equals("판별불가") || post.getGrade().contains(grade.toString()))
+                        .filter(post -> {
+                            String str = post.getRating()
+                                    .replaceAll("\\s+", "")
+                                    .replaceAll("이상", "");
+
+                            if (str.equals("판별불가") || !str.contains(".")) return true;
+                            try {
+                                return Double.parseDouble(str) <= rating;
+                            } catch (NumberFormatException e) {
+                                Log.d("DashboardFragment", "평점 판별 오류: " + e.getMessage());
+                                return true;
+                            }
+                        })
                         .collect(Collectors.toList());
             }
 
-            posts = posts.stream()
-                    .filter(post -> {
-                        String str = post.getIncomeBracket();
-                        if (str.equals("판별불가")) return true;
-                        int low = Integer.parseInt(str.trim().split("-")[0]);
-                        int high = Integer.parseInt(str.trim().split("-")[1]);
-                        return low <= incomeBracket && incomeBracket <= high;
-                    })
-                    .collect(Collectors.toList());
 
             // UI 업데이트는 메인 스레드에서 수행해야 하므로 핸들러 사용
             List<Post> finalPosts = posts;
+
+            // 모든 포스트 toString()에 대한 로그 출력
+//            for (Post post : finalPosts) {
+//                Log.d("DashboardFragment",
+//                        post.getTitle() +
+//                        post.getDate() +
+//                        post.getGrade() +
+//                        post.getIncomeBracket() +
+//                        post.getRating());
+//            }
+
             mainHandler.post(() -> postAdapter.setPosts(finalPosts));
         }).start();
     }
