@@ -320,7 +320,7 @@ public class DashboardFragment extends Fragment {
         }).start();
     }
 
-    private int getRadioButtonIdForGrade(Integer grade) {
+    public static int getRadioButtonIdForGrade(Integer grade) {
         switch (grade) {
             case 1:
                 return R.id.rbGrade1;
@@ -335,7 +335,7 @@ public class DashboardFragment extends Fragment {
         }
     }
 
-    private Integer getGradeFromRadioButtonId(int radioButtonId) {
+    public static Integer getGradeFromRadioButtonId(int radioButtonId) {
         if (radioButtonId == R.id.rbGrade1) {
             return 1;
         } else if (radioButtonId == R.id.rbGrade2) {
