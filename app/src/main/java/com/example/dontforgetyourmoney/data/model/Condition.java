@@ -45,7 +45,7 @@ public class Condition {
         if (incomeBracket != null && incomeBracket != 0) {
             sb.append("소득구간:").append(incomeBracket).append(" ");
         }
-        if (rating != null && rating != 0) {
+        if (rating != null) {
             sb.append("평점:").append(rating);
         }
         return sb.toString().isEmpty() ? ": 선택된 검색 조건 없음" : sb.toString();
