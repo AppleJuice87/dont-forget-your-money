@@ -14,12 +14,12 @@ import dagger.hilt.android.qualifiers.ApplicationContext;
 public class Condition {
     
     @PrimaryKey(autoGenerate = true) // 자동 증가하는 기본 키
-    private int id;
+    private int     id;
 
-    private String keyword; // 키워드 (nullable)
-    private Integer grade; // 학년 (nullable)
+    private String  keyword;       // 키워드 (nullable)
+    private Integer grade;         // 학년 (nullable)
     private Integer incomeBracket; // 소득구간 (nullable)
-    private Double rating; // 평점 (nullable)
+    private Double  rating;        // 평점 (nullable)
 
     // 생성자, getter 및 setter 메서드
     public Condition(String keyword, Integer grade, Integer incomeBracket, Double rating) {

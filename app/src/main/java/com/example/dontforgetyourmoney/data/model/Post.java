@@ -10,13 +10,13 @@ public class Post {
     @PrimaryKey(autoGenerate = true) // 자동 증가하는 기본 키
     private int id;
 
-    private String title; // 글 제목
-    private String date; // 작성일
-    private String content; // 본문
-    private String link; // 게시글 링크
-    private String grade; // 학년 (nullable)
+    private String title;       // 글 제목
+    private String date;        // 작성일
+    private String content;     // 본문
+    private String link;        // 게시글 링크
+    private String grade;       // 학년 (nullable)
     private String incomeBracket; // 소득구간 (nullable)
-    private String rating; // 평점 (nullable)
+    private String rating;      // 평점 (nullable)
 
     // 생성자, getter 및 setter 메서드
     public Post(String title, String date, String content, String link, String grade, String incomeBracket, String rating) {
