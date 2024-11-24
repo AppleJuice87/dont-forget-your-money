@@ -2,6 +2,11 @@
 - 쉽고 빠른 장학금 검색 프로젝트
 - 컴공 2-2 Android Programming Project 과제로 수행한 프로젝트입니다.
 
+## Description
+- Android OS 기반의 장학금 검색 앱
+- openAi api를 사용한 게시글 파싱
+- Hilt, Room DB, GSON, JSoup 활용
+
 ## How to Run
 1. Clone git repository
 
