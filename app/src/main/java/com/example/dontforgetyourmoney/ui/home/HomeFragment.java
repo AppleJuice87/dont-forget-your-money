@@ -68,7 +68,7 @@ public class HomeFragment extends Fragment {
                 binding.btnRefresh.setText("새로고침중... ");
             });
 
-            //! 테스트 용도로 3초 대기
+            //! 테스트 용도로 1초 대기
             try {
                 Thread.sleep(1000);
             } catch (InterruptedException e) {
@@ -92,7 +92,7 @@ public class HomeFragment extends Fragment {
 //                                postRepository.getPostIdByTitle("2024년 대동장학회(대동백화점) 장학생 선발 의뢰")));
 
             //! 파싱 테스트
-            //parser.parseAndSavePosts();
+            parser.parseAndSavePosts();
 
 //            postRepository.insert(new Post(String.format("랜덤제목 %d", (int) (Math.random() * 100)),
 //                    "123", "본문1", "링크", 2, 10, 4.5));
